@@ -9,3 +9,8 @@ export interface Note {
 }
 
 export type NoteMeta = Pick<Note, "id" | "title" | "createdAt" | "updatedAt">;
+
+export type CreateNoteDto = Pick<Note, "title">;
+
+export type UpdateNoteDto = Pick<Note, "id"> &
+  Partial<Pick<Note, "title" | "content">>;
