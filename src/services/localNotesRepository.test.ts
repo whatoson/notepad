@@ -44,6 +44,11 @@ describe("localNotesRepository", () => {
     vi.restoreAllMocks();
   });
 
+  it("should return empty array", async () => {
+    const notes = await localNotesRepository.getNotes();
+    expect(notes).toHaveLength(0);
+  });
+
   it("should get notes", async () => {
     createTestNote("Test note");
 
@@ -72,6 +77,12 @@ describe("localNotesRepository", () => {
     expect(content).toBeDefined();
   });
 
+  it("should throw error when note not found", async () => {
+    await expect(
+      localNotesRepository.getNoteContent("no-note"),
+    ).rejects.toThrow();
+  });
+
   it("should update note data", async () => {
     const id = createTestNote("Test note");
 
@@ -91,13 +102,14 @@ describe("localNotesRepository", () => {
     expect(inMemoryStorage[id].content).toEqual(newContent);
   });
 
-  it("should delete note", async () => {
-    const id = createTestNote("Test note");
-
-    await localNotesRepository.deleteNote(id);
-
-    expect(inMemoryStorage[id]).toBeUndefined();
-    expect(inMemoryStorage).toEqual({});
+  it("should throw on updating non existing note", async () => {
+    await expect(
+      localNotesRepository.updateNote({
+        id: "non-existing-note",
+        title: "Updated note",
+        content: {},
+      }),
+    ).rejects.toThrow();
   });
 
   it("should update note's updatedAt field", async () => {
@@ -112,5 +124,14 @@ describe("localNotesRepository", () => {
     });
 
     expect(inMemoryStorage[id].updatedAt).toEqual(Date.now());
+  });
+
+  it("should delete note", async () => {
+    const id = createTestNote("Test note");
+
+    await localNotesRepository.deleteNote(id);
+
+    expect(inMemoryStorage[id]).toBeUndefined();
+    expect(inMemoryStorage).toEqual({});
   });
 });
