@@ -11,8 +11,13 @@ import { notesStorage } from "./notesStorage";
 export const localNotesRepository: NotesRepository = {
   async getNotes(): Promise<NoteMeta[]> {
     const notes: NoteMeta[] = [];
-    await notesStorage.iterate((note: NoteMeta) => {
-      notes.push(note);
+    await notesStorage.iterate((note: Note) => {
+      notes.push({
+        id: note.id,
+        title: note.title,
+        createdAt: note.createdAt,
+        updatedAt: note.updatedAt,
+      });
     });
     return notes;
   },
