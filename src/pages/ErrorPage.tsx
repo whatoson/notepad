@@ -1,4 +1,3 @@
-import { Button, Center, Stack, Text } from "@mantine/core";
 import { Link, useRouteError } from "react-router";
 
 export function ErrorPage() {
@@ -8,13 +7,12 @@ export function ErrorPage() {
   console.error(error);
 
   return (
-    <Center h="100dvh">
-      <Stack align="center">
-        <Text size="lg">{message}</Text>
-        <Button component={Link} to="/">
-          Return
-        </Button>
-      </Stack>
-    </Center>
+    <div>
+      <h1>Error</h1>
+      <p>{message}</p>
+      <p>
+        <Link to="/">Return</Link>
+      </p>
+    </div>
   );
 }
