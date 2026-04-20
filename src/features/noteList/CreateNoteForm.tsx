@@ -1,40 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { useNoteList } from "./useNoteList";
+import { Form } from "react-router";
 
-export function CreateNoteForm({
-  className,
-  onClose,
-}: React.ComponentProps<"form"> & { onClose: () => void }) {
-  const createNote = useNoteList((state) => state.createNote);
-
-  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const title = formData.get("title")?.toString();
-
-    if (!title || title.trim().length === 0) {
-      toast.error("Title is required");
-      return;
-    }
-
-    try {
-      await createNote({ title });
-      onClose();
-    } catch {
-      toast.error("Failed to create note");
-    }
-  };
-
+export function CreateNoteForm({ className }: React.ComponentProps<"form">) {
   return (
-    <form
+    <Form
       className={cn("grid items-start gap-6", className)}
-      onSubmit={handleSubmit}
+      method="POST"
+      action="/note"
     >
       <Input name="title" placeholder="Title" autoComplete="off" />
       <Button type="submit">Create</Button>
-    </form>
+    </Form>
   );
 }

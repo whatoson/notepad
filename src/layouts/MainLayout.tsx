@@ -5,6 +5,11 @@ import { ThemeProvider } from "@/theme/theme-provider";
 import { Outlet } from "react-router";
 import { AppSidebar } from "./AppSidebar";
 import { Header } from "./Header";
+import type { NoteMeta } from "@/types/note";
+
+export interface MainLayoutLoaderData {
+  notes: NoteMeta[];
+}
 
 export function MainLayout() {
   return (

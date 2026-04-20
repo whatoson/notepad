@@ -17,7 +17,8 @@ import {
 import { SidebarGroupAction } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigation } from "react-router";
 import { CreateNoteForm } from "./CreateNoteForm";
 
 interface DialogProps {
@@ -33,6 +34,15 @@ const CREATE_NOTE_CONTENT = {
 export function CreateNoteDialog() {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
+  const navigation = useNavigation();
+  const isRedirecting =
+    navigation.state === "loading" && navigation.formData !== undefined;
+
+  useEffect(() => {
+    if (isRedirecting) {
+      setOpen(false);
+    }
+  }, [isRedirecting]);
 
   if (isMobile) {
     return <MobileDialog open={open} setOpen={setOpen} />;
@@ -56,7 +66,7 @@ function MobileDialog({ open, setOpen }: DialogProps) {
             {CREATE_NOTE_CONTENT.description}
           </DrawerDescription>
         </DrawerHeader>
-        <CreateNoteForm className="p-4" onClose={() => setOpen(false)} />
+        <CreateNoteForm className="p-4" />
       </DrawerContent>
     </Drawer>
   );
@@ -77,7 +87,7 @@ function DesktopDialog({ open, setOpen }: DialogProps) {
             {CREATE_NOTE_CONTENT.description}
           </DialogDescription>
         </DialogHeader>
-        <CreateNoteForm onClose={() => setOpen(false)} />
+        <CreateNoteForm />
       </DialogContent>
     </Dialog>
   );

@@ -4,19 +4,15 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { useEffect } from "react";
+import type { NoteMeta } from "@/types/note";
 import { CreateNoteDialog } from "./CreateNoteDialog";
 import { NoteListItem } from "./NoteListItem";
-import { useNoteList } from "./useNoteList";
 
-export function NoteList() {
-  const notes = useNoteList((state) => state.notes);
-  const refresh = useNoteList((state) => state.refresh);
+interface Props {
+  notes: NoteMeta[];
+}
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
-
+export function NoteList({ notes }: Props) {
   return (
     <SidebarGroup className="grow">
       <SidebarGroupLabel>Notes</SidebarGroupLabel>

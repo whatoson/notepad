@@ -1,12 +1,11 @@
+import { localNotesRepository } from "@/services/localNotesRepository";
 import { Placeholder } from "@tiptap/extensions";
 import { Tiptap, useEditor, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import "./editor.css";
-import { useEffect } from "react";
-import { localNotesRepository } from "@/services/localNotesRepository";
 import { debounce } from "lodash-es";
-import { useNoteList } from "../noteList/useNoteList";
+import { useEffect } from "react";
 import { toast } from "sonner";
+import "./editor.css";
 
 interface Props {
   id: string;
@@ -27,7 +26,6 @@ export function Editor({ id, content }: Props) {
     },
     [id],
   );
-  const refresh = useNoteList((s) => s.refresh);
 
   useEffect(() => {
     if (!editor) return;
@@ -40,9 +38,7 @@ export function Editor({ id, content }: Props) {
         });
       } catch (error) {
         toast.error("Failed to save a note");
-        return;
       }
-      await refresh();
     };
 
     const debouncedSave = debounce(saveContent, 500);
@@ -61,7 +57,7 @@ export function Editor({ id, content }: Props) {
       debouncedSave.flush();
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [editor, id, refresh]);
+  }, [editor, id]);
 
   return (
     <Tiptap editor={editor}>

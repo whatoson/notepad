@@ -5,8 +5,7 @@ import {
 } from "@/components/ui/sidebar";
 import type { NoteMeta } from "@/types/note";
 import { Trash2 } from "lucide-react";
-import { Link, useParams } from "react-router";
-import { useNoteList } from "./useNoteList";
+import { Link, useParams, useSubmit } from "react-router";
 
 interface NoteListItemProps {
   note: NoteMeta;
@@ -14,13 +13,22 @@ interface NoteListItemProps {
 
 export function NoteListItem({ note }: NoteListItemProps) {
   const { noteId } = useParams();
-  const deleteNote = useNoteList((state) => state.deleteNote);
+  const submit = useSubmit();
 
   const isActive = noteId === note.id;
   const to = isActive ? "/" : `/note/${note.id}`;
 
   const handleDeleteClick = async () => {
-    await deleteNote(note.id);
+    submit(
+      {
+        id: note.id,
+        returnTo: noteId ?? "",
+      },
+      {
+        action: `note/${note.id}`,
+        method: "DELETE",
+      },
+    );
   };
 
   return (
