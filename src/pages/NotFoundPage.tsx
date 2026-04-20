@@ -1,9 +1,24 @@
-import { Empty, EmptyTitle } from "@/components/ui/empty";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { Ghost } from "lucide-react";
 
 export function NotFoundPage() {
   return (
     <Empty className="border border-dashed">
-      <EmptyTitle>Not found...</EmptyTitle>
+      <EmptyHeader>
+        <EmptyMedia>
+          <Ghost />
+        </EmptyMedia>
+        <EmptyTitle>Not found</EmptyTitle>
+        <EmptyDescription>
+          The page you are looking for does not exist
+        </EmptyDescription>
+      </EmptyHeader>
     </Empty>
   );
 }

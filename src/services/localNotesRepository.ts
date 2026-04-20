@@ -26,7 +26,7 @@ export const localNotesRepository: NotesRepository = {
     const note: Note = {
       id: crypto.randomUUID(),
       title: dto.title,
-      content: {},
+      content: undefined,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };

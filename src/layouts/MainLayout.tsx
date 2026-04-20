@@ -10,13 +10,11 @@ export function MainLayout() {
   return (
     <ThemeProvider>
       <TooltipProvider>
-        <SidebarProvider>
+        <SidebarProvider className="h-svh overflow-hidden">
           <AppSidebar variant="inset" />
           <SidebarInset>
             <Header />
-            <main className="flex flex-1 flex-col gap-4 p-4">
-              <Outlet />
-            </main>
+            <Outlet />
           </SidebarInset>
           <Toaster position="top-center" richColors />
         </SidebarProvider>

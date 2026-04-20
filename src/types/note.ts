@@ -3,7 +3,7 @@ import type { JSONContent } from "@tiptap/react";
 export interface Note {
   id: string;
   title: string;
-  content: JSONContent;
+  content: JSONContent | undefined;
   updatedAt: number;
   createdAt: number;
 }

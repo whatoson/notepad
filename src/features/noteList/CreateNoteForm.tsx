@@ -23,8 +23,7 @@ export function CreateNoteForm({
     try {
       await createNote({ title });
       onClose();
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Failed to create note");
     }
   };
