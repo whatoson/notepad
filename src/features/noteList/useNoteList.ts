@@ -16,11 +16,11 @@ export const useNoteList = create<NoteListState>((set, get) => ({
     set({ notes });
   },
   createNote: async (dto: CreateNoteDto) => {
-    const note = await localNotesRepository.createNote(dto);
-    set({ notes: get().notes.concat(note) });
+    await localNotesRepository.createNote(dto);
+    get().refresh();
   },
   deleteNote: async (id) => {
     await localNotesRepository.deleteNote(id);
-    set({ notes: get().notes.filter((note) => note.id !== id) });
+    get().refresh();
   },
 }));

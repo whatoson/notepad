@@ -19,7 +19,7 @@ export const localNotesRepository: NotesRepository = {
         updatedAt: note.updatedAt,
       });
     });
-    return notes;
+    return notes.sort((a, b) => b.createdAt - a.createdAt);
   },
 
   async createNote(dto: CreateNoteDto): Promise<NoteMeta> {
