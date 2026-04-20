@@ -64,7 +64,7 @@ describe("localNotesRepository", () => {
     expect(inMemoryStorage[note.id]).toEqual({
       id: expect.any(String),
       title: "Test note",
-      content: expect.anything(),
+      content: undefined,
       createdAt: expect.any(Number),
       updatedAt: expect.any(Number),
     });

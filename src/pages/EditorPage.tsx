@@ -3,6 +3,6 @@ import type { JSONContent } from "@tiptap/react";
 import { useLoaderData } from "react-router";
 
 export function EditorPage() {
-  const content = useLoaderData() as JSONContent;
+  const content = useLoaderData() as JSONContent | undefined;
   return <Editor content={content} />;
 }

@@ -41,7 +41,7 @@ export const localNotesRepository: NotesRepository = {
     return meta;
   },
 
-  async getNoteContent(id: string): Promise<JSONContent> {
+  async getNoteContent(id: string): Promise<JSONContent | undefined> {
     const note = await notesStorage.getItem<Note>(id);
     if (!note) throw new Error("Note not found");
 

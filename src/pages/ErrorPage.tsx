@@ -13,7 +13,7 @@ export function ErrorPage() {
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
   return (
-    <Empty className="border border-dashed">
+    <Empty className="border border-dashed m-4">
       <EmptyHeader>
         <EmptyMedia>
           <Bug />

@@ -9,7 +9,7 @@ import { Ghost } from "lucide-react";
 
 export function NotFoundPage() {
   return (
-    <Empty className="border border-dashed">
+    <Empty className="border border-dashed m-4">
       <EmptyHeader>
         <EmptyMedia>
           <Ghost />
