@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -8,6 +9,7 @@ import {
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -18,32 +20,49 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { CreateNoteForm } from "./CreateNoteForm";
 
+interface DialogProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CREATE_NOTE_CONTENT = {
+  title: "Create note",
+  description: "Enter a title for your note",
+};
+
 export function CreateNoteDialog() {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   if (isMobile) {
-    return (
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          <SidebarGroupAction>
-            <Plus />
-          </SidebarGroupAction>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader className="text-left">
-            <DrawerTitle>Create note</DrawerTitle>
-          </DrawerHeader>
-          <CreateNoteForm className="p-4" onClose={handleClose} />
-        </DrawerContent>
-      </Drawer>
-    );
+    return <MobileDialog open={open} setOpen={setOpen} />;
   }
 
+  return <DesktopDialog open={open} setOpen={setOpen} />;
+}
+
+function MobileDialog({ open, setOpen }: DialogProps) {
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <SidebarGroupAction>
+          <Plus />
+        </SidebarGroupAction>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="text-left">
+          <DrawerTitle>{CREATE_NOTE_CONTENT.title}</DrawerTitle>
+          <DrawerDescription>
+            {CREATE_NOTE_CONTENT.description}
+          </DrawerDescription>
+        </DrawerHeader>
+        <CreateNoteForm className="p-4" onClose={() => setOpen(false)} />
+      </DrawerContent>
+    </Drawer>
+  );
+}
+
+function DesktopDialog({ open, setOpen }: DialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -51,11 +70,14 @@ export function CreateNoteDialog() {
           <Plus />
         </SidebarGroupAction>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-106.25">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create note</DialogTitle>
+          <DialogTitle>{CREATE_NOTE_CONTENT.title}</DialogTitle>
+          <DialogDescription>
+            {CREATE_NOTE_CONTENT.description}
+          </DialogDescription>
         </DialogHeader>
-        <CreateNoteForm onClose={handleClose} />
+        <CreateNoteForm onClose={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );
