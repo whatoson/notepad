@@ -9,7 +9,7 @@ import { NotebookPen } from "lucide-react";
 
 export function EmptyPage() {
   return (
-    <Empty className="border border-dashed m-4">
+    <Empty className="border border-dashed">
       <EmptyHeader>
         <EmptyMedia>
           <NotebookPen />
