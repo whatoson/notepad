@@ -1,41 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useNote } from "@/features/note/useNote";
 import { cn } from "@/lib/utils";
-import type { ActionResult } from "@/routes/note/action";
-import { useEffect } from "react";
-import { useFetcher } from "react-router";
 import { useCreateNoteDialog } from "./useCreateNoteDialog";
+import { useEffect } from "react";
 
 export function CreateNoteForm({ className }: React.ComponentProps<"form">) {
-  const fetcher = useFetcher();
-  const result = fetcher.data as ActionResult | undefined;
+  const { Form, result, errors } = useNote();
   const close = useCreateNoteDialog((s) => s.close);
 
   useEffect(() => {
     if (result?.ok) {
       close();
     }
-  }, [close, result?.ok]);
+  }, [close, result]);
 
   return (
-    <fetcher.Form
+    <Form
       className={cn("grid items-start gap-6", className)}
       method="POST"
       action="/note"
     >
-      <Field data-invalid={result?.errors?.title ? true : undefined}>
+      <Input name="intent" value="create" hidden readOnly />
+      <Field data-invalid={errors?.title ? true : undefined}>
         <FieldLabel>Title</FieldLabel>
         <Input
           name="title"
           autoComplete="off"
-          aria-invalid={result?.errors?.title ? true : undefined}
+          aria-invalid={errors?.title ? true : undefined}
         />
-        {result?.errors?.title && (
-          <FieldError>{result?.errors?.title}</FieldError>
-        )}
+        {errors?.title && <FieldError>{errors?.title}</FieldError>}
       </Field>
       <Button type="submit">Create</Button>
-    </fetcher.Form>
+    </Form>
   );
 }

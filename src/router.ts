@@ -7,7 +7,6 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { mainLayoutLoader } from "./routes/loader";
 import { noteIdLoader } from "./routes/note/noteId/loader";
 import { noteAction } from "./routes/note/action";
-import { noteIdAction } from "./routes/note/noteId/action";
 
 export const router = createHashRouter([
   {
@@ -23,7 +22,6 @@ export const router = createHashRouter([
             path: ":noteId",
             Component: EditorPage,
             ErrorBoundary: ErrorPage,
-            action: noteIdAction,
             loader: noteIdLoader,
           },
         ],

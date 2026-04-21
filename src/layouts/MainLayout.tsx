@@ -15,7 +15,7 @@ export function MainLayout() {
           <AppSidebar variant="inset" />
           <SidebarInset>
             <Header />
-            <div className="p-4 flex flex-1 min-h-0">
+            <div className="flex flex-1 min-h-0">
               <Outlet />
               <Dialogs />
             </div>

@@ -1,55 +1,44 @@
+import type { ActionFunctionArgs } from "react-router";
+import { NoteActionSchema } from "./actionSchema";
 import { localNotesRepository } from "@/services/localNotesRepository";
-import {
-  data,
-  type ActionFunctionArgs,
-  type UNSAFE_DataWithResponseInit,
-} from "react-router";
 
 export interface ActionResult {
   ok?: boolean;
-  redirectTo?: string;
   errors?: Record<string, string>;
 }
 
 export async function noteAction({
   request,
-}: ActionFunctionArgs): Promise<UNSAFE_DataWithResponseInit<ActionResult>> {
-  const method = request.method.toUpperCase();
+}: ActionFunctionArgs): Promise<ActionResult> {
   const formData = await request.formData();
+  const rawData = Object.fromEntries(formData);
 
-  if (method === "POST") {
-    const errors = validateFormData(formData);
+  const result = NoteActionSchema.safeParse(rawData);
 
-    if (Object.keys(errors).length > 0) {
-      return data({ errors }, { status: 400 });
-    }
-
-    const note = await localNotesRepository.createNote({
-      title: formData.get("title") as string,
-    });
-    return data({
-      ok: true,
-      redirectTo: `/note/${note.id}`,
-    });
+  if (!result.success) {
+    return {
+      errors: result.error.issues.reduce(
+        (acc, issue) => {
+          const path = issue.path[0] as string;
+          acc[path] = issue.message;
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
+    };
   }
 
-  return data(
-    {
-      errors: { method: "Method not allowed" },
-    },
-    {
-      status: 400,
-    },
-  );
-}
-
-function validateFormData(formData: FormData): Record<string, string> {
-  const errors: Record<string, string> = {};
-
-  const title = formData.get("title") as string;
-  if (!title || title.trim() === "") {
-    errors.title = "Title is required";
+  const data = result.data;
+  switch (data.intent) {
+    case "create":
+      await localNotesRepository.createNote({ title: data.title });
+      break;
+    case "update":
+      await localNotesRepository.updateNote({ id: data.id, title: data.title });
+      break;
+    case "delete":
+      await localNotesRepository.deleteNote(data.id);
+      break;
   }
-
-  return errors;
+  return { ok: true };
 }

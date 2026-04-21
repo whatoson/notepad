@@ -63,7 +63,7 @@ export function Editor({ id, content }: Props) {
 
   return (
     <Tiptap editor={editor}>
-      <Tiptap.Content className="flex-1 w-full overflow-y-scroll" />
+      <Tiptap.Content className="p-4 mb-4 flex-1 w-full overflow-y-scroll" />
     </Tiptap>
   );
 }
