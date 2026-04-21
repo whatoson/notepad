@@ -1,17 +1,40 @@
 import { localNotesRepository } from "@/services/localNotesRepository";
-import { redirect, type ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs } from "react-router";
 
-export async function noteIdAction({ request }: ActionFunctionArgs) {
-  const method = request.method.toUpperCase();
-  const formData = await request.formData();
+export interface ActionResult {
+  ok?: boolean;
+  errors?: Record<string, string>;
+}
+
+export async function noteIdAction(
+  args: ActionFunctionArgs,
+): Promise<ActionResult> {
+  const method = args.request.method.toUpperCase();
 
   if (method === "DELETE") {
-    const id = formData.get("id") as string;
-    const returnTo = formData.get("returnTo") as string;
-    await localNotesRepository.deleteNote(id);
-    if (!returnTo || returnTo === id) {
-      return redirect("/");
-    }
-    return redirect(`/note/${returnTo}`);
+    return onDelete(args);
   }
+
+  return {
+    errors: {
+      method: "Method not allowed",
+    },
+  };
+}
+
+async function onDelete({ params }: ActionFunctionArgs): Promise<ActionResult> {
+  const id = params.noteId ?? "";
+
+  if (!id) {
+    return {
+      errors: {
+        id: "ID not found",
+      },
+    };
+  }
+
+  await localNotesRepository.deleteNote(id);
+  return {
+    ok: true,
+  };
 }
