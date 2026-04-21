@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { ThemeProviderContext, type Theme } from "./theme-context";
 
-type ThemeProviderProps = {
+interface ThemeProviderProps {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
-};
+}
 
 export function ThemeProvider({
   children,
@@ -49,8 +49,8 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext {...props} value={value}>
       {children}
-    </ThemeProviderContext.Provider>
+    </ThemeProviderContext>
   );
 }

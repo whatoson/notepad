@@ -36,26 +36,28 @@ export function Editor({ id, content }: Props) {
           id,
           content: editor.getJSON(),
         });
-      } catch (error) {
+      } catch {
         toast.error("Failed to save a note");
       }
     };
 
     const debouncedSave = debounce(saveContent, 500);
 
-    editor.on("update", () => {
-      debouncedSave();
+    editor.on("update", async () => {
+      await debouncedSave();
     });
 
     const handleBeforeUnload = () => {
-      debouncedSave.flush();
+      debouncedSave.flush()?.catch((reason) => {
+        toast.error(`Failed to save: ${reason}`);
+      });
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      debouncedSave.flush();
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      handleBeforeUnload();
     };
   }, [editor, id]);
 

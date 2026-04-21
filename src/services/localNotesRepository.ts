@@ -53,8 +53,14 @@ export const localNotesRepository: NotesRepository = {
     const note = await notesStorage.getItem<Note>(dto.id);
     if (!note) throw new Error("Note not found");
 
-    note.title = dto.title || note.title;
-    note.content = dto.content || note.content;
+    if (dto.title?.trim() === "") {
+      note.title = dto.title;
+    }
+
+    if (dto.content) {
+      note.content = dto.content;
+    }
+
     note.updatedAt = Date.now();
 
     await notesStorage.setItem(note.id, note);

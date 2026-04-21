@@ -29,13 +29,14 @@ describe("localNotesRepository", () => {
       }
     });
     vi.spyOn(notesStorage, "setItem").mockImplementation(async (key, value) => {
-      inMemoryStorage[key] = value as Note;
+      return Promise.resolve((inMemoryStorage[key] = value as Note));
     });
     vi.spyOn(notesStorage, "getItem").mockImplementation(async (key) => {
-      return inMemoryStorage[key];
+      return Promise.resolve(inMemoryStorage[key]);
     });
     vi.spyOn(notesStorage, "removeItem").mockImplementation(async (key) => {
       delete inMemoryStorage[key];
+      return Promise.resolve();
     });
   });
 

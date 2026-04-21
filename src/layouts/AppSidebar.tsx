@@ -1,7 +1,7 @@
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { NoteList } from "@/features/noteList/NoteList";
+import type { MainLayoutLoaderData } from "@/routes/loader";
 import { useLoaderData } from "react-router";
-import type { MainLayoutLoaderData } from "./MainLayout";
 
 interface Props {
   variant?: "inset" | "sidebar" | "floating" | undefined;
