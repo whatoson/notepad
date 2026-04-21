@@ -4,12 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/theme/theme-provider";
 import { Outlet } from "react-router";
 import { AppSidebar } from "./AppSidebar";
+import { Dialogs } from "./Dialogs";
 import { Header } from "./Header";
-import type { NoteMeta } from "@/types/note";
-
-export interface MainLayoutLoaderData {
-  notes: NoteMeta[];
-}
 
 export function MainLayout() {
   return (
@@ -21,6 +17,7 @@ export function MainLayout() {
             <Header />
             <div className="p-4 flex flex-1 min-h-0">
               <Outlet />
+              <Dialogs />
             </div>
           </SidebarInset>
           <Toaster position="top-center" richColors />

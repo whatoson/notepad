@@ -1,6 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import type { MainLayoutLoaderData } from "@/routes/loader";
 import { useLoaderData, useParams } from "react-router";
-import type { MainLayoutLoaderData } from "./MainLayout";
 
 export function Header() {
   const { noteId } = useParams();

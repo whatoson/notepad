@@ -1,10 +1,15 @@
-import type { EditorPageLoaderData } from "@/pages/EditorPage";
 import { localNotesRepository } from "@/services/localNotesRepository";
+import type { JSONContent } from "@tiptap/react";
 import type { LoaderFunctionArgs } from "react-router";
+
+export interface NoteIdLoaderData {
+  id: string;
+  content: JSONContent | undefined;
+}
 
 export async function noteIdLoader({
   params,
-}: LoaderFunctionArgs): Promise<EditorPageLoaderData> {
+}: LoaderFunctionArgs): Promise<NoteIdLoaderData> {
   if (!params.noteId) {
     throw new Error("Note ID is required");
   }
