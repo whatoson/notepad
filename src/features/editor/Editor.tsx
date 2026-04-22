@@ -1,10 +1,9 @@
-import { localNotesRepository } from "@/services/localNotesRepository";
 import { Placeholder } from "@tiptap/extensions";
 import { Tiptap, useEditor, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { debounce } from "lodash-es";
 import { useEffect } from "react";
-import { toast } from "sonner";
+import { useNote } from "../note/useNote";
 import "./editor.css";
 
 interface Props {
@@ -27,30 +26,23 @@ export function Editor({ id, content }: Props) {
     [id],
   );
 
+  const { updateNote } = useNote();
+
   useEffect(() => {
     if (!editor) return;
 
-    const saveContent = async () => {
-      try {
-        await localNotesRepository.updateNote({
-          id,
-          content: editor.getJSON(),
-        });
-      } catch {
-        toast.error("Failed to save a note");
-      }
+    const saveContent = () => {
+      updateNote({ id, content: editor.getJSON() ?? null });
     };
 
     const debouncedSave = debounce(saveContent, 500);
 
-    editor.on("update", async () => {
-      await debouncedSave();
+    editor.on("update", () => {
+      debouncedSave();
     });
 
     const handleBeforeUnload = () => {
-      debouncedSave.flush()?.catch((reason) => {
-        toast.error(`Failed to save: ${reason}`);
-      });
+      debouncedSave.flush();
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -59,7 +51,7 @@ export function Editor({ id, content }: Props) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       handleBeforeUnload();
     };
-  }, [editor, id]);
+  }, [editor, id, updateNote]);
 
   return (
     <Tiptap editor={editor}>

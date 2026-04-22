@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Field, FieldError, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 
@@ -23,7 +24,7 @@ export function TextField({
       <FieldLabel>{label}</FieldLabel>
       <Input
         name={name}
-        value={value}
+        defaultValue={value}
         placeholder={placeholder}
         autoComplete={autoComplete}
         aria-invalid={error ? true : undefined}

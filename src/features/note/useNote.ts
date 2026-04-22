@@ -24,7 +24,11 @@ export function useNote() {
       ...data,
     };
 
-    void fetcher.submit(payload, { method: "POST", action: "/note" });
+    void fetcher.submit(payload, {
+      method: "POST",
+      action: "/note",
+      encType: "application/json",
+    });
   };
 
   const deleteNote = (data: Omit<DeleteNoteRequest, "intent">) => {

@@ -19,7 +19,7 @@ export const localNotesRepository: NotesRepository = {
         updatedAt: note.updatedAt,
       });
     });
-    return notes.sort((a, b) => b.createdAt - a.createdAt);
+    return notes.sort((a, b) => a.title.localeCompare(b.title));
   },
 
   async createNote(dto: CreateNoteDto): Promise<NoteMeta> {
@@ -53,7 +53,7 @@ export const localNotesRepository: NotesRepository = {
     const note = await notesStorage.getItem<Note>(dto.id);
     if (!note) throw new Error("Note not found");
 
-    if (dto.title?.trim() === "") {
+    if (dto.title && dto.title.trim() !== "") {
       note.title = dto.title;
     }
 

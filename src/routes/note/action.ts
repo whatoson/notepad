@@ -10,8 +10,15 @@ export interface ActionResult {
 export async function noteAction({
   request,
 }: ActionFunctionArgs): Promise<ActionResult> {
-  const formData = await request.formData();
-  const rawData = Object.fromEntries(formData);
+  let formData;
+  let rawData;
+  if (request.headers.get("Content-Type") === "application/json") {
+    formData = (await request.json()) as unknown;
+    rawData = formData;
+  } else {
+    formData = await request.formData();
+    rawData = Object.fromEntries(formData);
+  }
 
   const result = NoteActionSchema.safeParse(rawData);
 
@@ -29,12 +36,18 @@ export async function noteAction({
   }
 
   const data = result.data;
+  console.log(data);
+
   switch (data.intent) {
     case "create":
       await localNotesRepository.createNote({ title: data.title });
       break;
     case "update":
-      await localNotesRepository.updateNote({ id: data.id, title: data.title });
+      await localNotesRepository.updateNote({
+        id: data.id,
+        title: data.title,
+        content: data.content ?? undefined,
+      });
       break;
     case "delete":
       await localNotesRepository.deleteNote(data.id);

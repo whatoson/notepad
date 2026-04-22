@@ -1,3 +1,4 @@
+import type { JSONContent } from "@tiptap/react";
 import { z } from "zod";
 
 const BaseSchema = z.object({
@@ -11,7 +12,12 @@ const CreateSchema = z.object({
 
 const UpdateSchema = BaseSchema.extend({
   intent: z.literal("update"),
-  title: z.string().min(3, "Title must be at least 3 characters long").max(100),
+  title: z
+    .string()
+    .min(3, "Title must be at least 3 characters long")
+    .max(100)
+    .optional(),
+  content: z.any().optional() as z.ZodType<JSONContent | null>,
 });
 
 const DeleteSchema = BaseSchema.extend({
