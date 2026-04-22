@@ -7,20 +7,23 @@ import {
 } from "@/components/ui/sidebar";
 import type { NoteMeta } from "@/types/note";
 import { Plus } from "lucide-react";
+import { useNoteAction } from "../note/useNoteAction";
 import { NoteListItem } from "./NoteListItem";
-import { useCreateNoteDialog } from "./create/useCreateNoteDialog";
 
 interface Props {
   notes: NoteMeta[];
 }
 
 export function NoteList({ notes }: Props) {
-  const openCreateNoteDialog = useCreateNoteDialog((s) => s.open);
+  const open = useNoteAction((s) => s.open);
+  const handleCreate = () => {
+    open("create");
+  };
 
   return (
     <SidebarGroup className="grow">
       <SidebarGroupLabel>Notes</SidebarGroupLabel>
-      <SidebarGroupAction onClick={openCreateNoteDialog}>
+      <SidebarGroupAction onClick={handleCreate}>
         <Plus />
       </SidebarGroupAction>
       <SidebarGroupContent>

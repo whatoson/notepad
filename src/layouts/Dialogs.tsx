@@ -1,9 +1,9 @@
-import { CreateNoteDialog } from "@/features/noteList/create/CreateNoteDialog";
+import { NoteActionDialog } from "@/features/note/NoteActionDialog";
 
 export function Dialogs() {
   return (
     <>
-      <CreateNoteDialog />
+      <NoteActionDialog />
     </>
   );
 }

@@ -7,7 +7,7 @@ import {
 import type { NoteMeta } from "@/types/note";
 import { Trash2 } from "lucide-react";
 import { Link, useParams } from "react-router";
-import { useNote } from "../note/useNote";
+import { useNoteAction } from "../note/useNoteAction";
 
 interface NoteListItemProps {
   note: NoteMeta;
@@ -15,13 +15,13 @@ interface NoteListItemProps {
 
 export function NoteListItem({ note }: NoteListItemProps) {
   const { noteId } = useParams();
-  const { deleteNote } = useNote();
   const { setOpenMobile } = useSidebar();
+  const open = useNoteAction((s) => s.open);
 
   const isActive = noteId === note.id;
 
   const handleDelete = () => {
-    deleteNote({ id: note.id });
+    open("delete", note.id);
   };
 
   return (
